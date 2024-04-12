@@ -27,7 +27,7 @@ async function getData() {
   return data;
 }
 
-// ╾─────────────────────────╼ GETSTATICPROPS ╾──────────────────────╼
+// ═══════════════════════════ GETSTATICPROPS ════════════════════════
 export async function getStaticProps(context) {
   const { params } = context;
   const productId = params.pid;
@@ -49,7 +49,7 @@ export async function getStaticProps(context) {
   };
 }
 
-// ╾─────────────────────────╼ GETSTATICPATHS ╾──────────────────────╼
+// ═══════════════════════════ GETSTATICPATHS ════════════════════════
 export async function getStaticPaths() {
   const data = await getData();
 
