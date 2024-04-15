@@ -1,19 +1,17 @@
-function UserProfilePage(props) {
-  return <h1>Hello, {props.username}</h1>;
+function UserIdPage(props) {
+  return <h1>{props.id}</h1>;
 }
 
-export default UserProfilePage;
+export default UserIdPage;
 
 // ═════════════════════════ GETSERVERSIDEPROPS ══════════════════════
 export async function getServerSideProps(context) {
-  const { params, req, res } = context;
-
-  // console.log("🪚 req:", req);
-  // console.log("🪚 res:", res);
+  const { params } = context;
+  const userId = params.uid;
 
   return {
     props: {
-      username: "MIC",
+      id: "userid-" + userId,
     },
   };
 }
