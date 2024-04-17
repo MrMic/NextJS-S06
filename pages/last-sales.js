@@ -1,38 +1,63 @@
 import { useEffect, useState } from "react";
+import useSWR from "swr";
 
 function LastSalesPage() {
   const [sales, setSales] = useState();
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
 
   // ______________________________________________________________________
+  const fetcher = (url) => fetch(url).then((r) => r.json());
+
+  const { data, error } = useSWR(
+    "https://nextjs-course-9c213-default-rtdb.europe-west1.firebasedatabase.app/sales.json",
+    fetcher,
+  );
+
   useEffect(() => {
-    setIsLoading(true);
-    fetch(
-      "https://nextjs-course-9c213-default-rtdb.europe-west1.firebasedatabase.app/sales.json",
-    ).then((response) => {
-      response.json().then((data) => {
-        const transformSales = [];
+    if (data) {
+      const transformSales = [];
 
-        for (const key in data) {
-          transformSales.push({
-            id: key,
-            username: data[key].username,
-            volume: data[key].volume,
-          });
-        }
+      for (const key in data) {
+        transformSales.push({
+          id: key,
+          username: data[key].username,
+          volume: data[key].volume,
+        });
+      }
 
-        setSales(transformSales);
-        setIsLoading(false);
-      });
-    });
-  }, []);
+      setSales(transformSales);
+    }
+  }, [data]);
 
-  if (isLoading) {
-    return <p>Loading...</p>;
+  // ______________________________________________________________________
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   fetch(
+  //     "https://nextjs-course-9c213-default-rtdb.europe-west1.firebasedatabase.app/sales.json",
+  //   ).then((response) => {
+  //     response.json().then((data) => {
+  //       const transformSales = [];
+  //
+  //       for (const key in data) {
+  //         transformSales.push({
+  //           id: key,
+  //           username: data[key].username,
+  //           volume: data[key].volume,
+  //         });
+  //       }
+  //
+  //       setSales(transformSales);
+  //       setIsLoading(false);
+  //     });
+  //   });
+  // }, []);
+
+  if (error) {
+    return <p>Failed to load.</p>;
   }
 
-  if (!sales) {
-    return <p>No sales yet!</p>;
+  if (!sales || !sales) {
+    return <p>Loading...</p>;
   }
 
   // ______________________________________________________________________
